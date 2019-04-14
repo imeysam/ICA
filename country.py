@@ -23,6 +23,13 @@ class Country:
     def getCost(self):
         return self.cost
 
+    def getRepresentation(self):
+        return self.representation
+
+    def setRepresentation(self, representation):
+        self.representation = representation
+        self.calculateCost()
+
     # def getImperialist
 
 

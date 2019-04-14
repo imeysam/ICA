@@ -29,8 +29,13 @@ class Empire:
             self.colonies.insert(index, ctr)
         self.calculateCost()
 
+
+    def getColonies(self):
+        return self.colonies
+
     def getNumberOfColonies(self):
-        return len(self.colonies)
+        return len(self.getColonies())
+
 
     def getColony(self, index):
         return self.colonies[index]

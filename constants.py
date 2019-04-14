@@ -4,6 +4,10 @@ class Constant:
 
     REPRESENTATION = (4, 5)
 
+    BETTA = 2
+
+    ABSORB_RATE = .6
+
     ETC = [
         [1, 2, 3, 4],
         [5, 6, 7, 8],

@@ -9,5 +9,9 @@ if __name__ == "__main__":
 
     empires = ica.createEmpires(countries=countries)
 
-    for empire in empires:
-        print(empire.getNumberOfColonies())
+    ica.absorb()
+
+
+
+    # for empire in empires:
+    #     print(empire.getNumberOfColonies())

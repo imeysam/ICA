@@ -52,3 +52,18 @@ class Ica:
             self.empires[k].addColony(colony)
 
         return self.empires
+
+
+
+    def absorb(self):
+        for empire in self.empires:
+            for colony in empire.getColonies():
+                colony_vector = colony.getRepresentation()
+                X = (np.random.uniform(0, colony_vector * Constant.BETTA)).astype(int)
+                colony.setRepresentation(colony_vector + X)
+
+                imperialist = empire.getImperialist()
+                if colony.getCost() < imperialist.getCost():
+                    temp = imperialist.getRepresentation()
+                    imperialist.setRepresentation(colony.getRepresentation())
+                    colony.setRepresentation(temp)
