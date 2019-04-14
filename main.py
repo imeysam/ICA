@@ -3,15 +3,17 @@ from ICA import Ica
 
 
 if __name__ == "__main__":
+
     ica = Ica()
 
     countries = ica.createCountries(count = Constant.COUNTRY_COUNT)
 
-    empires = ica.createEmpires(countries=countries)
+    ica.createEmpires(countries = countries)
 
     ica.absorb()
 
+    ica.competition()
 
+    empire = ica.empires[0]
 
-    # for empire in empires:
-    #     print(empire.getNumberOfColonies())
+    print(empire.getColoniesCount())

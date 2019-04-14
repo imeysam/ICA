@@ -1,9 +1,9 @@
 from country import Country
-from country_types import CountryType
 from helpers import *
 from constants import Constant
 from empire import Empire
 import numpy as np
+
 
 class Ica:
     def __init__(self):
@@ -18,7 +18,6 @@ class Ica:
             self.countries.append(Country(dimensions))
 
         return self.countries
-
 
     def createEmpires(self, **args):
         countries = args['countries']
@@ -38,7 +37,6 @@ class Ica:
         self.countries = new_countries
         empires = self.countries[: Constant.IMPERIALIST_COUNT]
         self.colonies = self.countries[Constant.IMPERIALIST_COUNT:]
-
 
         for i in empires:
             self.empires.append(Empire(i))
@@ -67,3 +65,50 @@ class Ica:
                     temp = imperialist.getRepresentation()
                     imperialist.setRepresentation(colony.getRepresentation())
                     colony.setRepresentation(temp)
+
+
+
+
+    def competition(self):
+
+        if len(self.empires) == 1:
+            return self.empires[0]
+
+        TotalCost = np.array([empire.getCost() for empire in self.empires])
+
+        weakest_empire_index = np.argmax(TotalCost)
+        weakest_empire = self.empires[weakest_empire_index]
+
+        P = np.divide(TotalCost, TotalCost.sum())
+        P = np.flip(P, 0)
+
+        if weakest_empire.getColoniesCount() > 0:
+
+            weakest_empire_colonies_cost = np.array([colony.getCost() for colony in weakest_empire.getColonies()])
+
+            weakest_colony_index = np.argmax(weakest_empire_colonies_cost)
+            weakest_colony = weakest_empire.getColony(weakest_colony_index)
+
+            winning_empire_index = randomSelection(P)
+            winning_empire = self.empires[winning_empire_index]
+
+            winning_empire.addColony(weakest_colony)
+
+            weakest_empire.deleteColony(weakest_colony_index)
+
+
+        if weakest_empire.getColoniesCount() == 0:
+
+            winning_empire_index = randomSelection(P)
+
+            winning_empire = self.empires[winning_empire_index]
+
+            winning_empire.addColony(weakest_empire.getImperialist())
+
+            del self.empires[self.empires.index(weakest_empire)]
+
+        self.competition()
+
+
+
+

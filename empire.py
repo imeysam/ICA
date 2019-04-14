@@ -7,14 +7,6 @@ class Empire:
     def calculateCost(self):
         return self.imperialist.getCost() + sum([colony.getCost() for colony in self.colonies])
 
-    def replaceColony(self, index, colony):
-        self.colonies[index] = colony
-        self.calculateCost()
-
-    def replaceImperialist(self, colony):
-        self.imperialist = colony
-        self.calculateCost()
-
     def deleteColony(self, index):
         del self.colonies[index]
         self.calculateCost()
@@ -36,10 +28,16 @@ class Empire:
     def getNumberOfColonies(self):
         return len(self.getColonies())
 
+    def getColoniesCount(self):
+        return len(self.getColonies())
+
 
     def getColony(self, index):
         return self.colonies[index]
 
     def getImperialist(self):
         return self.imperialist
+
+    def delete(self):
+        del self
 
