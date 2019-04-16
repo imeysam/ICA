@@ -3,6 +3,7 @@ from helpers import *
 from constants import Constant
 from empire import Empire
 import numpy as np
+import time
 
 
 class Ica:
@@ -23,8 +24,8 @@ class Ica:
         countries = args['countries']
 
         costs = []
-        for i in range(len(countries)):
-            costs.append(countries[i].getCost())
+        for country in countries:
+            costs.append(country.getCost())
         costs = np.array(costs)
 
         sorted_indicates = np.argsort(costs)
@@ -33,8 +34,8 @@ class Ica:
         for i in sorted_indicates:
             new_countries.append(self.countries[i])
         new_countries = np.array(new_countries)
-
         self.countries = new_countries
+
         empires = self.countries[: Constant.IMPERIALIST_COUNT]
         self.colonies = self.countries[Constant.IMPERIALIST_COUNT:]
 
@@ -57,7 +58,9 @@ class Ica:
         for empire in self.empires:
             for colony in empire.getColonies():
                 colony_vector = colony.getRepresentation()
+
                 X = (np.random.uniform(0, colony_vector * Constant.BETTA)).astype(int)
+
                 colony.setRepresentation(colony_vector + X)
 
                 imperialist = empire.getImperialist()
@@ -74,12 +77,12 @@ class Ica:
         if len(self.empires) == 1:
             return self.empires[0]
 
-        TotalCost = np.array([empire.getCost() for empire in self.empires])
+        empiresTotalCost = np.array([empire.getCost() for empire in self.empires])
 
-        weakest_empire_index = np.argmax(TotalCost)
+        weakest_empire_index = np.argmax(empiresTotalCost)
         weakest_empire = self.empires[weakest_empire_index]
 
-        P = np.divide(TotalCost, TotalCost.sum())
+        P = np.divide(empiresTotalCost, empiresTotalCost.sum())
         P = np.flip(P, 0)
 
         if weakest_empire.getColoniesCount() > 0:
@@ -96,17 +99,25 @@ class Ica:
 
             weakest_empire.deleteColony(weakest_colony_index)
 
+            print("'{}' Empire <= '{}' Colony of '{}' Empire".format(winning_empire.name, weakest_colony.name,
+                                                                     weakest_empire.name), end='\n')
 
-        if weakest_empire.getColoniesCount() == 0:
+
+        elif weakest_empire.getColoniesCount() == 0:
 
             winning_empire_index = randomSelection(P)
-
             winning_empire = self.empires[winning_empire_index]
 
             winning_empire.addColony(weakest_empire.getImperialist())
 
             del self.empires[self.empires.index(weakest_empire)]
 
+            print("***************************")
+            print("'{}' Empire x '{}' Empire".format(winning_empire.name, weakest_empire.name))
+            print("***************************", end='\n\n')
+
+
+        time.sleep(.100)
         self.competition()
 
 

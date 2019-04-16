@@ -16,4 +16,4 @@ if __name__ == "__main__":
 
     empire = ica.empires[0]
 
-    print(empire.getColoniesCount())
+    print("Empire '{}' is winner....****".format(empire.name))

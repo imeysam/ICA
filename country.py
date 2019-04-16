@@ -1,6 +1,8 @@
 import numpy as np
 from country_types import CountryType
 from constants import Constant
+import string
+import random
 
 class Country:
     def __init__(self, representation, type = CountryType.INIT):
@@ -8,12 +10,13 @@ class Country:
         self.type = type
         self.representation = representation
         self.cost = self.calculateCost()
+        self.name = ''.join(random.choices(string.ascii_lowercase, k=3))
 
     def calculateCost(self):
         return np.sum(np.multiply(np.array(Constant.ETC).T, self.representation))
 
     @property
-    def is_colony(self):
+    def isColony(self):
         return self.type == CountryType.COLONY
 
     @property
@@ -28,9 +31,7 @@ class Country:
 
     def setRepresentation(self, representation):
         self.representation = representation
-        self.calculateCost()
-
-    # def getImperialist
+        self.cost = self.calculateCost()
 
 
 
